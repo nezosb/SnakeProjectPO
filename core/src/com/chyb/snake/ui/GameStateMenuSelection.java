@@ -49,7 +49,7 @@ public class GameStateMenuSelection {
             currentOption = currentOption % length;
             downPressed = true;
         } else downPressed = false;
-        if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
             enterPressed();
         }
     }
@@ -61,10 +61,9 @@ public class GameStateMenuSelection {
                 break;
             case 1:
                 if(!Gdx.graphics.isFullscreen()){
-                    //DisplayMode dm = new DisplayMode();
-                    //Gdx.graphics.setFullscreenMode(dm);
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
                 }else{
-
+                    Gdx.graphics.setWindowedMode(640,360);
                 }
                 //TODO
                 break;

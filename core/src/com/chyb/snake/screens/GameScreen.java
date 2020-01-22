@@ -1,11 +1,11 @@
 package com.chyb.snake.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chyb.snake.entities.GameMap;
 import com.chyb.snake.entities.Metronome;
 import com.chyb.snake.entities.Player;
@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
         draw();
     }
     private void update(float delta) {
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
         if(player.isDead()) reset();
 
         boolean ticked = metronome.updateAndTick(delta);
