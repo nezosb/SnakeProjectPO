@@ -19,18 +19,16 @@ public class Ghost implements MapEntity
     }
 
     @Override
-    public void draw(Batch batch) {
-        batch.begin();
+    public void draw() {
+        Batch batch = AssetHandler.getBatch();
         TextureRegion ghostReg = AssetHandler.getGhostRegion();
         batch.draw(ghostReg,position.x*GameMap.TILESIZE,position.y*GameMap.TILESIZE);
-        batch.end();
     }
 
     @Override
     public boolean isHarmful() {
         return true;
     }
-
     public void setPosition(Vector2D position) {
         this.position = position;
     }

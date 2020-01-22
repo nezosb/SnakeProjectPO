@@ -23,7 +23,7 @@ public class Player implements MapEntity {
     }
     public void reset(){
         isDead = false;
-        position = new Vector2D(16,16);
+        position = new Vector2D(9,9);
         direction = Direction.L;
         ghostTail.clear();
     }
@@ -81,12 +81,11 @@ public class Player implements MapEntity {
     public Vector2D getPosition() {
         return position;
     }
-    public void draw(Batch batch){
-        batch.begin();
+    public void draw(){
+        Batch batch = AssetHandler.getBatch();
         TextureRegion playerRegion = AssetHandler.getPlayerRegion();
         batch.draw(playerRegion,position.x*GameMap.TILESIZE, position.y*GameMap.TILESIZE,8,8,
                 GameMap.TILESIZE,GameMap.TILESIZE,1,1, direction.rotation);
-        batch.end();
 
     }
 

@@ -1,5 +1,5 @@
 package com.chyb.snake.entities;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.chyb.snake.utils.AssetHandler;
 import com.chyb.snake.utils.Vector2D;
@@ -12,7 +12,7 @@ public class GameMap {
     public static final int HEIGHT = 18;
     public static final int TILESIZE = 16;
     private int fruitAmount = 0;
-    private MapEntity mapOccupied[][];
+    private MapEntity[][] mapOccupied;
     public GameMap(){
         mapOccupied = new MapEntity[WIDTH][HEIGHT];
         fruitAmount = 0;
@@ -44,27 +44,26 @@ public class GameMap {
         }
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw() {
+        Batch batch = AssetHandler.getBatch();
         gridDraw(batch);
 
         for(int i =0; i < WIDTH; i++){
             for(int j = 0; j < HEIGHT; j++){
                 if(mapOccupied[i][j] != null){
-                    mapOccupied[i][j].draw(batch);
+                    mapOccupied[i][j].draw();
                 }
             }
         }
     }
 
-    private void gridDraw(SpriteBatch batch) {
-        batch.begin();
+    private void gridDraw(Batch batch) {
         TextureRegion tileRegion = AssetHandler.getTileRegion();
         for(int i =0; i < WIDTH; i++){
             for(int j = 0; j < HEIGHT; j++){
                 batch.draw(tileRegion,i*TILESIZE,j*TILESIZE);
             }
         }
-        batch.end();
     }
 
     public boolean findAndRemoveFruit(Vector2D position) {

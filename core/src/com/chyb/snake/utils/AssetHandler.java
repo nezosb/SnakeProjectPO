@@ -38,7 +38,7 @@ public class AssetHandler {
         }
 
     }
-    public static Texture loadTexture(String source){
+    private static Texture loadTexture(String source){
         Texture tex = new Texture(source);
         disposables.add(tex);
         return tex;

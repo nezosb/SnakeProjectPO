@@ -1,10 +1,5 @@
 package com.chyb.snake.entities;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.chyb.snake.utils.AssetHandler;
-
 public class Metronome {
     private float tickTime;
     private float time;

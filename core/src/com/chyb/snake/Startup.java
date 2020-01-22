@@ -13,9 +13,6 @@ import com.chyb.snake.screens.TitleScreen;
 import com.chyb.snake.utils.AssetHandler;
 
 public class Startup extends Game {
-	private Texture img;
-	private OrthographicCamera camera;
-
 	@Override
 	public void create () {
 		AssetHandler.loadAll();
