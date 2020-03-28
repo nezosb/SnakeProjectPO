@@ -8,7 +8,7 @@ public class Metronome {
     }
 
     public void reset() {
-        tickTime = 0.2f;
+        tickTime = 0.25f;
         time = 0;
     }
 
@@ -20,5 +20,13 @@ public class Metronome {
         }
         return false;
     }
-
+    public float getTickPercentage(){
+        return Math.max((tickTime/3 - time) / tickTime,0);
+    }
+    public float getTrueTickPercentage(){
+        return Math.max((tickTime-time) / tickTime,0);
+    }
+    public static float tickFunction(float time, float maxTime){
+        return Math.max((maxTime - time) / maxTime,0);
+    }
 }

@@ -19,6 +19,11 @@ public class Fruit implements MapEntity {
     }
 
     @Override
+    public void setPosition(Vector2D position) {
+        this.position = position;
+    }
+
+    @Override
     public void draw() {
         Batch batch = AssetHandler.getBatch();
         TextureRegion fruitRegion = AssetHandler.getFruitRegion();
@@ -30,5 +35,10 @@ public class Fruit implements MapEntity {
     @Override
     public boolean isHarmful() {
         return false;
+    }
+
+    @Override
+    public boolean isEatable() {
+        return true;
     }
 }

@@ -65,7 +65,6 @@ public class GameStateMenuSelection {
                 }else{
                     Gdx.graphics.setWindowedMode(640,360);
                 }
-                //TODO
                 break;
             case 2:
                 Gdx.app.exit();

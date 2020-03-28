@@ -30,6 +30,9 @@ public class Vector2D {
     public Vector2D mod(Vector2D modVal){
         return new Vector2D((this.x % modVal.x + modVal.x) % modVal.x, (this.y % modVal.y + modVal.y) % modVal.y);
     }
+    public Vector2D signum(){
+        return new Vector2D((int) Math.signum(this.x),(int) Math.signum(this.y));
+    }
     public boolean equals(Object other){
         if(this==other)return true;
         else if(!(other instanceof Vector2D))return false;
@@ -49,5 +52,4 @@ public class Vector2D {
         hash += this.y * 4337;
         return hash;
     }
-
 }

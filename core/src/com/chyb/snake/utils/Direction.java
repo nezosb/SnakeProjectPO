@@ -10,4 +10,18 @@ public enum Direction {
         this.toUnitVector = position;
         this.rotation = rotation;
     }
+
+    public Direction flip() {
+        switch(this){
+            case L:
+                return R;
+            case R:
+                return L;
+            case U:
+                return D;
+            case D:
+                return U;
+        }
+        return null;
+    }
 }

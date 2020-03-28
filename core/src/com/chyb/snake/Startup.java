@@ -13,6 +13,8 @@ import com.chyb.snake.screens.TitleScreen;
 import com.chyb.snake.utils.AssetHandler;
 
 public class Startup extends Game {
+	public static int SCR_WIDTH = 640;
+	public static int SCR_HEIGHT = 320;
 	@Override
 	public void create () {
 		AssetHandler.loadAll();
