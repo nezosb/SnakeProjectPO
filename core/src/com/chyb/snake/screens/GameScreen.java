@@ -2,11 +2,10 @@ package com.chyb.snake.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.chyb.snake.Startup;
 import com.chyb.snake.entities.outside.EntitySpawner;
 import com.chyb.snake.entities.GameMap;
 import com.chyb.snake.entities.Metronome;
@@ -17,7 +16,8 @@ import com.chyb.snake.ui.StatisticsTracker;
 import com.chyb.snake.utils.AssetHandler;
 import com.chyb.snake.vfx.VfxHandler;
 
-public class GameScreen implements Screen {
+public class GameScreen extends ExtendedScreen {
+
     private final Player player;
     private final Metronome metronome;
     private final GameMap gameMap;
@@ -28,6 +28,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera hudCam2;
     private final StatisticsTracker statisticsTracker;
     private final VfxHandler vfxHandler;
+    private final Startup startup;
     private State currentState;
     private float stateTime;
 
@@ -35,7 +36,8 @@ public class GameScreen implements Screen {
         START,PLAY,END
     }
 
-    public GameScreen(){
+    public GameScreen(Startup startup){
+        this.startup = startup;
         metronome = new Metronome();
         vfxHandler = new VfxHandler();
         scoreTracker = new ScoreTracker();
@@ -59,7 +61,7 @@ public class GameScreen implements Screen {
         hudCam2.update();
         reset();
     }
-    private void reset(){
+    public void reset(){
         metronome.reset();
         gameMap.reset();
         player.reset();
@@ -75,11 +77,12 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         update(delta);
         draw();
+
     }
     private void update(float delta) {
 
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-        if(player.isDead()) reset();
+        if(player.isDead()) startup.setScreen(new EndScreen(startup,scoreTracker.getScore()));
 
         switch(currentState){
             case START:
@@ -105,17 +108,15 @@ public class GameScreen implements Screen {
     private void draw() {
         Batch batch = AssetHandler.getBatch();
 
-        //if(currentState == State.PLAY) {
-            batch.setProjectionMatrix(hudCam.combined);
-            batch.begin();
-            scoreTracker.draw(batch);
-            batch.end();
+        batch.setProjectionMatrix(hudCam.combined);
+        batch.begin();
+        scoreTracker.draw(batch);
+        batch.end();
 
-            batch.setProjectionMatrix(hudCam2.combined);
-            batch.begin();
-            statisticsTracker.draw();
-            batch.end();
-        //}
+        batch.setProjectionMatrix(hudCam2.combined);
+        batch.begin();
+        statisticsTracker.draw();
+        batch.end();
 
         batch.setProjectionMatrix(gameCam.combined);
         batch.begin();
@@ -139,9 +140,10 @@ public class GameScreen implements Screen {
                     offset = 8*4+9;
                 }else if(s.equals("0")){
                     s = "go";
-                    offset = 8*6;
+                    offset = 8*6 - 2;
+                    offsetY -= 0.1;
                 }
-                batch.setColor(Color.ORANGE);
+                batch.setColor(255f/255,170f/255,0,1);
                 MyFontB.draw(batch, s, GameMap.WIDTH * GameMap.TILESIZE/2f-offset,
                         GameMap.HEIGHT*GameMap.TILESIZE/2f-32 + 25*offsetY,4);
                 batch.setColor(1,1,1,1);
@@ -155,18 +157,4 @@ public class GameScreen implements Screen {
 
     }
 
-    @Override
-    public void show() {}
-    @Override
-    public void resize(int width, int height) {}
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {}
-    @Override
-    public void hide() {}
-    @Override
-    public void dispose() {
-        AssetHandler.dispose();
-    }
 }

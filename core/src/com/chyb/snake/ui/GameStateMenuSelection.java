@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.chyb.snake.Startup;
+import com.chyb.snake.screens.EndScreen;
 import com.chyb.snake.screens.GameScreen;
 import com.chyb.snake.utils.AssetHandler;
 
@@ -57,15 +58,17 @@ public class GameStateMenuSelection {
     private void enterPressed() {
         switch(currentOption) {
             case 0:
-                game.setGame();
+                game.setGameScreen();
                 break;
             case 1:
-                if(!Gdx.graphics.isFullscreen()){
+                game.setScreen(new EndScreen(game,15));
+                break;
+                /*if(!Gdx.graphics.isFullscreen()){
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
                 }else{
                     Gdx.graphics.setWindowedMode(640,360);
                 }
-                break;
+                break;*/
             case 2:
                 Gdx.app.exit();
                 break;

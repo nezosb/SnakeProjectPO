@@ -60,7 +60,7 @@ public class ScoreTracker {
         batch.draw(AssetHandler.getColorRects()[0],multiplierX + 80 + 2,240+2,barLength,4);
 
         //TODO remove
-        MyFontB.draw(batch,""+ Gdx.graphics.getFramesPerSecond(),20,120);
+        //MyFontB.draw(batch,""+ Gdx.graphics.getFramesPerSecond(),20,120);
         scoreList.draw();
 
     }
@@ -79,5 +79,9 @@ public class ScoreTracker {
         scoreList.reset();
         multipliedTime=0;
         score = 0;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

@@ -11,15 +11,12 @@ public class SpotTaker implements MapEntity{
     public Vector2D getPosition() {
         return position;
     }
-
     @Override
     public void setPosition(Vector2D position) {
         this.position = position;
     }
-
     @Override
     public void draw() {}
-
     @Override
     public boolean isHarmful() {
         return false;

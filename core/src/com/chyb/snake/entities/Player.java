@@ -178,7 +178,7 @@ public class Player implements MapEntity {
     public void hit() {
         if(currentState==State.PLAY){
             currentState = State.DYING;
-            diedVelocityY = 150;
+            diedVelocityY = 180;
             diedPositionY = 0;
         }
     }

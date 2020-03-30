@@ -14,7 +14,8 @@ import com.chyb.snake.ui.MyFontB;
 import com.chyb.snake.utils.AssetHandler;
 
 
-public class TitleScreen implements Screen {
+public class TitleScreen extends ExtendedScreen {
+
     private final Game game;
     private final GameStateMenuSelection menu;
     private SpriteBatch batch;
@@ -48,7 +49,7 @@ public class TitleScreen implements Screen {
             case TITLE:
                 time += delta;
                 time = time % 2;
-                if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)){
+                if(Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
                     currentState = State.TRANSITION;
                     time = 0;
                 }
@@ -98,7 +99,14 @@ public class TitleScreen implements Screen {
                 lineDraw();
                 break;
             case MENU:
+                MyFontB.draw(batch,"main menu",64,Startup.SCR_HEIGHT/10*8+24,2);
+                for(int i = 0; i<11;i++){
+                    batch.draw(AssetHandler.getMenuMovingSliderRegion(),i*16,Startup.SCR_HEIGHT/10*8);
+                }
                 menu.draw(batch);
+                for(int i = 0; i<5;i++){
+
+                }
                 break;
         }
 
@@ -110,20 +118,6 @@ public class TitleScreen implements Screen {
             batch.draw(AssetHandler.getMenuMovingSliderRegion(), i * 16 +
                     Metronome.tickFunction(time % 0.5f,0.25f) * 8, 120);
         }
-    }
-
-
-    @Override
-    public void resize(int width, int height) {}
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {}
-    @Override
-    public void hide() {}
-    @Override
-    public void dispose() {
-        AssetHandler.dispose();
     }
 
 }
