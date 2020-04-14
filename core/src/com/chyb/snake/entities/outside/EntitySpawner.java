@@ -1,5 +1,6 @@
 package com.chyb.snake.entities.outside;
 
+import com.badlogic.gdx.math.Vector2;
 import com.chyb.snake.entities.GameMap;
 import com.chyb.snake.entities.Metronome;
 import com.chyb.snake.entities.Player;
@@ -34,6 +35,7 @@ public class EntitySpawner {
             timer-=5f;
             spawnSkipShip();
             spawnBlock();
+            // spawnTrain();
         }
     }
     private void spawnSkipShip(){
@@ -67,5 +69,13 @@ public class EntitySpawner {
         int yPosition = random.nextInt(GameMap.HEIGHT);
         Vector2D position = new Vector2D(xPosition,yPosition);
         gMap.addOutsideEntityUnderPlayer(new StopBlock(position,direction,gMap, metronome, player));
+    }
+    private void spawnTrain(){
+        int x = random.nextInt(GameMap.WIDTH);
+        int y = random.nextInt(GameMap.HEIGHT);
+        int length = random.nextInt(3)+4;
+
+        gMap.addOutsideEntityUnderPlayer(new Train(new Vector2D(x,y), length,true, gMap,metronome,player));
+
     }
 }

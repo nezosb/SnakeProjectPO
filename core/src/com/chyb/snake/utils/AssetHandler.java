@@ -14,6 +14,7 @@ public class AssetHandler {
     private static ArrayList<Disposable> disposables;
     private static ShapeRenderer shapeRenderer;
     private static SpriteBatch batch;
+    private static SpriteBatch defaultBatch;
     private static TextureRegion fruitRegion;
     private static TextureRegion ghostRegion;
     private static TextureRegion tileRegion;
@@ -28,6 +29,7 @@ public class AssetHandler {
     private static TextureRegion menuMovingSliderHead;
     private static TextureRegion menuMovingSlider;
     private static Texture gameMap;
+    private static TextureRegion[] trainRegions;
 
 
     public static void loadAll(){
@@ -35,7 +37,15 @@ public class AssetHandler {
         shapeRenderer = new ShapeRenderer();
         disposables.add(shapeRenderer);
         batch = new SpriteBatch();
+        defaultBatch = new SpriteBatch();
         disposables.add(batch);
+        disposables.add(defaultBatch);
+
+        OrthographicCamera defcam = new OrthographicCamera(640,360);
+        defcam.translate(320,180);
+        defcam.update();
+        defaultBatch.setProjectionMatrix(defcam.combined);
+
         Texture menuTexture = loadTexture("menu.gif");
         menuMovingSlider = new TextureRegion(menuTexture, 0,0,16,16);
         menuMovingSliderHead = new TextureRegion(menuTexture,0,0,16,16);
@@ -49,10 +59,16 @@ public class AssetHandler {
         playerRegion = new TextureRegion(texture,48,0,16,16);
         cursorRegion = new TextureRegion(texture,0,16,64,16);
         shipRegion = new TextureRegion(texture,16*5,16,16,16);
-        colorRects = new TextureRegion[2];
+        colorRects = new TextureRegion[3];
         colorRects[0] = new TextureRegion(texture, 16*6, 0, 16,16);
         colorRects[1] = new TextureRegion(texture,16*7, 0, 16,16);
+        colorRects[2] = new TextureRegion(texture,16*8, 0, 16,16);
         blockRegion = new TextureRegion(texture, 16*6,16,16,16);
+        trainRegions = new TextureRegion[3];
+        trainRegions[0] = new TextureRegion(texture, 16*7,16,16,16);
+        trainRegions[1] = new TextureRegion(texture, 16*8,16,16,16);
+        trainRegions[2] = new TextureRegion(texture, 16*8,16*2,16,16);
+
 
         miniFBO = new FrameBuffer(Pixmap.Format.RGBA8888,100,100,false);
 
@@ -88,6 +104,9 @@ public class AssetHandler {
     public static SpriteBatch getBatch() {
         return batch;
     }
+    public static SpriteBatch getDefaultBatch() {
+        return defaultBatch;
+    }
 
     public static TextureRegion getMenuMovingSliderRegion(){
         return menuMovingSlider;
@@ -102,9 +121,6 @@ public class AssetHandler {
     public static TextureRegion getFruitRegion(){
         return fruitRegion;
     }
-    public static TextureRegion getTileRegion(){
-        return tileRegion;
-    }
     public static TextureRegion getPlayerRegion(){
         return playerRegion;
     }
@@ -115,6 +131,7 @@ public class AssetHandler {
         return menuOptionsRegions;
     }
     public static TextureRegion[] getColorRects() { return colorRects; }
+    public static TextureRegion[] getTrainRegions(){ return trainRegions; }
 
     public static Texture getMyFontB() {
         return myFontBTexture;

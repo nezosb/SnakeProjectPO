@@ -72,7 +72,7 @@ public class ScoreTracker {
     public void addMultiplier(){
         multiplied++;
         multipliedTime = multipliedTimeMax;
-        addScore(ScoreList.ScoreType.Fruit);
+        addScore(ScoreList.ScoreType.Grow);
     }
     public void reset() {
         multiplied = 0;

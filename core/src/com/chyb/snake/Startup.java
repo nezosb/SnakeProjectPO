@@ -14,11 +14,11 @@ import com.chyb.snake.screens.TitleScreen;
 import com.chyb.snake.utils.AssetHandler;
 
 public class Startup extends Game {
-	public static int SCR_WIDTH = 640;
-	public static int SCR_HEIGHT = 360;
+	public static final int SCR_WIDTH = 640;
+	public static final int SCR_HEIGHT = 360;
 	private TitleScreen titleScr;
 	private GameScreen gameScr;
-
+	private ExtendedScreen nextScreen;
 	@Override
 	public void create () {
 		AssetHandler.loadAll();
@@ -26,18 +26,20 @@ public class Startup extends Game {
 		gameScr = new GameScreen(this);
 		this.setScreen(new TitleScreen(this));
 	}
+	public void setNext(){
+		nextScreen.unlock();
+		this.setScreen(nextScreen);
+	}
 	public void setExtendedScreen(ExtendedScreen screen){
-		this.setScreen(screen);
+		((ExtendedScreen)(this.getScreen())).lock();
+		nextScreen = screen;
 	}
 	public void setTitleScreen(){
-		this.setScreen(titleScr);
+		titleScr.reset();
+		setExtendedScreen(titleScr);
 	}
 	public void setGameScreen(){
 		gameScr.reset();
-		this.setScreen(gameScr);
-	}
-	@Override
-	public void dispose () {
-		AssetHandler.dispose();
+		setExtendedScreen(gameScr);
 	}
 }

@@ -9,11 +9,13 @@ import com.chyb.snake.utils.AssetHandler;
 import com.chyb.snake.utils.Direction;
 import com.chyb.snake.utils.Vector2D;
 import com.chyb.snake.vfx.VfxHandler;
-import java.util.LinkedList;
-import java.util.Random;
+
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GameMap {
     private static Random random = new Random();
+    private static LinkedBlockingQueue<OutsideEntity> toRemoveQueue = new LinkedBlockingQueue<OutsideEntity>();
     public static final int WIDTH = 17;
     public static final int HEIGHT = 17;
     public static final int TILESIZE = 16;
@@ -66,12 +68,24 @@ public class GameMap {
         }
     }
     public void updateEntities(boolean tick){
+
         for(OutsideEntity entity : outsideEntitiesUnderPlayer){
             entity.update(tick);
+            if(entity.toRemove()) toRemoveQueue.add(entity);
         }
+        for(OutsideEntity entity: toRemoveQueue){
+            outsideEntitiesUnderPlayer.remove(entity);
+        }
+        toRemoveQueue.clear();
         for(OutsideEntity entity : outsideEntitiesOverPlayer){
             entity.update(tick);
+            if(entity.toRemove()) toRemoveQueue.add(entity);
         }
+        for(OutsideEntity entity: toRemoveQueue){
+            outsideEntitiesOverPlayer.remove(entity);
+        }
+        toRemoveQueue.clear();
+
     }
     public void draw() {
         Batch batch = AssetHandler.getBatch();
@@ -159,4 +173,10 @@ public class GameMap {
         outsideEntitiesUnderPlayer.addFirst(entity);
     }
     public void addOutsideEntityOverPlayer(OutsideEntity entity) { outsideEntitiesOverPlayer.addFirst(entity); }
+
+    public boolean isOccupiedByGhost(Vector2D position) {
+        if(getMapEntity(position) != null)
+            return getMapEntity(position) instanceof Ghost; //TODO FIX
+        return false;
+    }
 }

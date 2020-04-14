@@ -11,8 +11,11 @@ import java.util.LinkedList;
 public class ScoreList {
 
     public enum ScoreType{
-        Fruit(100),
-        Skip(150);
+        Grow(50),
+        PlaneSkip(150),
+        Block(50),
+        Train(100);
+
         public final int value;
         ScoreType(int value){
             this.value = value;

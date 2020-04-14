@@ -28,7 +28,6 @@ public class GameScreen extends ExtendedScreen {
     private final OrthographicCamera hudCam2;
     private final StatisticsTracker statisticsTracker;
     private final VfxHandler vfxHandler;
-    private final Startup startup;
     private State currentState;
     private float stateTime;
 
@@ -37,7 +36,7 @@ public class GameScreen extends ExtendedScreen {
     }
 
     public GameScreen(Startup startup){
-        this.startup = startup;
+        super(startup);
         metronome = new Metronome();
         vfxHandler = new VfxHandler();
         scoreTracker = new ScoreTracker();
@@ -70,19 +69,9 @@ public class GameScreen extends ExtendedScreen {
         currentState = State.START;
         stateTime = 2;
     }
-    @Override
-    public void render(float delta) {
-        //delta/=10;
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        update(delta);
-        draw();
-
-    }
-    private void update(float delta) {
-
+    protected void update(float delta) {
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-        if(player.isDead()) startup.setScreen(new EndScreen(startup,scoreTracker.getScore()));
+        if(player.isDead()) startup.setExtendedScreen(new EndScreen(startup,scoreTracker.getScore()));
 
         switch(currentState){
             case START:
@@ -105,7 +94,7 @@ public class GameScreen extends ExtendedScreen {
         }
 
     }
-    private void draw() {
+    protected void draw() {
         Batch batch = AssetHandler.getBatch();
 
         batch.setProjectionMatrix(hudCam.combined);
@@ -132,8 +121,8 @@ public class GameScreen extends ExtendedScreen {
                 batch.draw(AssetHandler.getColorRects()[0],-1,-1,
                         GameMap.TILESIZE*GameMap.WIDTH+2,GameMap.TILESIZE*GameMap.HEIGHT+2);
 
-                int digit = (int) (stateTime*2);
-                float offsetY = Math.max(0.6f, (stateTime*2 -(int)(stateTime*2))*(stateTime*2 -(int)(stateTime*2)))-0.6f;
+                int digit = Math.min((int) (stateTime*2),3);
+                float offsetY = Math.max(0.6f, (stateTime*2 -digit)*(stateTime*2 - digit))-0.6f;
                 String s = digit + "";
                 float offset = 8*4-2;
                 if(s.equals("1")){

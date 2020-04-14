@@ -76,4 +76,8 @@ public class StopBlock implements OutsideEntity {
         }
 
     }
+    @Override
+    public boolean toRemove() {
+        return false;
+    }
 }

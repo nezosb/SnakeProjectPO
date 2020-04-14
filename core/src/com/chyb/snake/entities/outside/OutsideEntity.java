@@ -7,4 +7,5 @@ public interface OutsideEntity {
     void update(boolean tick);
     Vector2D getPosition();
     void draw();
+    boolean toRemove();
 }

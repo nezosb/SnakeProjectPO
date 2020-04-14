@@ -40,5 +40,9 @@ public class EaterBlock implements OutsideEntity {
         batch.draw(region,getPosition().x*GameMap.TILESIZE, (getPosition().y+1)*GameMap.TILESIZE);
         batch.draw(region,(getPosition().x+1)*GameMap.TILESIZE, (getPosition().y+1)*GameMap.TILESIZE);
     }
+    @Override
+    public boolean toRemove() {
+        return false;
+    }
 
 }

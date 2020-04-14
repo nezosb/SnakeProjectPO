@@ -16,39 +16,39 @@ import com.chyb.snake.utils.AssetHandler;
 
 public class TitleScreen extends ExtendedScreen {
 
-    private final Game game;
     private final GameStateMenuSelection menu;
     private SpriteBatch batch;
     private State currentState;
     private float time;
+    OrthographicCamera camera;
+
+    public void reset() {
+        batch.setProjectionMatrix(camera.combined);
+        currentState = State.TITLE;
+        time=0;
+    }
+
     private enum State{
         TITLE, TRANSITION, MENU
     }
 
     public TitleScreen(Startup game){
-        this.game = game;
+        super(game);
         this.menu = new GameStateMenuSelection(game);
         currentState = State.TITLE;
-    }
-    @Override
-    public void show() {
         batch = AssetHandler.getBatch();
-        OrthographicCamera camera = new OrthographicCamera(640,360);
+        camera = new OrthographicCamera(640,360);
         camera.translate(320,180);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
     }
 
-    @Override
-    public void render(float delta) {
-        update(delta);
-        draw();
-    }
-    private void update(float delta){
+
+    protected void update(float delta){
+        time += delta;
+        time = time % 2;
         switch(currentState){
             case TITLE:
-                time += delta;
-                time = time % 2;
                 if(Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
                     currentState = State.TRANSITION;
                     time = 0;
@@ -58,7 +58,6 @@ public class TitleScreen extends ExtendedScreen {
                 menu.update();
                 break;
             case TRANSITION:
-                time += delta;
                 if(time>=0.5f) {
                     time = 0;
                     currentState = State.MENU;
@@ -68,10 +67,10 @@ public class TitleScreen extends ExtendedScreen {
 
     }
     private void titleDraw(){
-        float offset = MyFontB.getBoundsX("project tease")/2;
-        MyFontB.draw(batch,"project tease",Startup.SCR_WIDTH/2-offset*3,Startup.SCR_HEIGHT/2,3);
+        float offset = MyFontB.getBoundsX("arcade tease")/2;
+        MyFontB.draw(batch,"arcade tease",Startup.SCR_WIDTH/2-offset*3,Startup.SCR_HEIGHT/2,3);
     }
-    private void draw(){
+    protected void draw(){
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -100,22 +99,23 @@ public class TitleScreen extends ExtendedScreen {
                 break;
             case MENU:
                 MyFontB.draw(batch,"main menu",64,Startup.SCR_HEIGHT/10*8+24,2);
-                for(int i = 0; i<11;i++){
-                    batch.draw(AssetHandler.getMenuMovingSliderRegion(),i*16,Startup.SCR_HEIGHT/10*8);
+                float tickVal = Metronome.tickFunction(time % 0.5f,0.25f);
+                batch.setColor(1,1,1,1);
+                for(int i = -1; i<24;i++){
+                    if(i==23)batch.setColor(1,1,1,tickVal);
+                    batch.draw(AssetHandler.getMenuMovingSliderRegion(),i*8 -
+                            tickVal * 8,Startup.SCR_HEIGHT/10*8);
                 }
+                batch.setColor(1,1,1,1);
                 menu.draw(batch);
-                for(int i = 0; i<5;i++){
-
-                }
                 break;
         }
-
         batch.end();
     }
 
     private void lineDraw() {
-        for(int i =-1; i < Startup.SCR_WIDTH ; i++) {
-            batch.draw(AssetHandler.getMenuMovingSliderRegion(), i * 16 +
+        for(int i =-1; i < Startup.SCR_WIDTH/8 ; i++) {
+            batch.draw(AssetHandler.getMenuMovingSliderRegion(), i *8 +
                     Metronome.tickFunction(time % 0.5f,0.25f) * 8, 120);
         }
     }

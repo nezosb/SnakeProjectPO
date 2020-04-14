@@ -13,6 +13,7 @@ import com.chyb.snake.vfx.VfxHandler;
 import java.util.LinkedList;
 
 public class Player implements MapEntity {
+
     private final GameMap gMap;
     private final ScoreTracker scoreTracker;
     private final VfxHandler vfxHandler;
@@ -25,6 +26,12 @@ public class Player implements MapEntity {
     private float dyingTime;
     private float diedVelocityY;
     private float diedPositionY;
+    private int steps;
+
+    public Vector2D getPreviousPosition() {
+        return previousPosition;
+    }
+
     private enum State{
         PLAY,DYING,DEAD
     }
@@ -44,6 +51,7 @@ public class Player implements MapEntity {
         gMap.placeMapEntity(position,new SpotTaker(position));
         ghostTail.clear();
         dyingTime = 0;
+        steps = 0;
     }
     public void update(boolean tick, float delta){
         readInput();
@@ -67,9 +75,9 @@ public class Player implements MapEntity {
                 ghost.setPosition(ghost.getPosition());
             }
         }
-        if(dyingTime>5f) currentState = State.DEAD;
+        if(dyingTime>3f) currentState = State.DEAD;
         if(tick && currentState == State.PLAY) {
-
+            steps++;
             previousPosition = position;
 
             boolean toAddTail = false;
@@ -181,6 +189,9 @@ public class Player implements MapEntity {
             diedVelocityY = 180;
             diedPositionY = 0;
         }
+    }
+    public int getSteps(){
+        return steps;
     }
 
     public int getSize() {

@@ -13,13 +13,14 @@ import com.chyb.snake.utils.AssetHandler;
 public class EndScreen extends ExtendedScreen {
 
     private final Startup startup;
-    Startup backScreen;
     private int score;
     private float time = 0;
+    private float blinkTime;
     private boolean readyToSwitch;
     OrthographicCamera camera;
 
     public EndScreen(Startup startup, int score){
+        super(startup);
         this.score = score;
         this.startup = startup;
         readyToSwitch = false;
@@ -28,19 +29,19 @@ public class EndScreen extends ExtendedScreen {
         camera.update();
     }
 
-    private void update(float delta) {
+    protected void update(float delta) {
         time += delta;
-        if(time > 2f) readyToSwitch = true;
+        blinkTime+=delta;
+        blinkTime = blinkTime % 2;
+        if(time > 1f) readyToSwitch = true;
 
         if(readyToSwitch && Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
             startup.setTitleScreen();
         }
     }
 
-
     @Override
-    public void render(float delta) {
-        update(delta);
+    public void draw() {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -64,9 +65,10 @@ public class EndScreen extends ExtendedScreen {
         if(readyToSwitch){
             String nStr = "continue?";
             float offsetX = MyFontB.getBoundsX(nStr)/2;
+            batch.setColor(1,1,1,1-(blinkTime-1)*(blinkTime-1));
             MyFontB.draw(batch, nStr, Startup.SCR_WIDTH/2 - offsetX,Startup.SCR_HEIGHT/2-64);
+            batch.setColor(1,1,1,1);
         }
-
         batch.end();
     }
 }

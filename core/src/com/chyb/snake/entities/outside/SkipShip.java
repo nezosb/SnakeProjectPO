@@ -22,6 +22,7 @@ public class SkipShip implements OutsideEntity {
     private GameMap gMap;
     private Vector2D previousPosition;
     private boolean skipped;
+    private boolean toRemove;
 
     public SkipShip(Vector2D position, Direction direction, Player player, GameMap gMap, Metronome metronome, VfxHandler vfxHandler){
         this.position = position;
@@ -31,6 +32,7 @@ public class SkipShip implements OutsideEntity {
         this.metronome = metronome;
         this.vfxHandler = vfxHandler;
         previousPosition = position;
+        toRemove = false;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class SkipShip implements OutsideEntity {
                 target = target.add(direction.toUnitVector);
             }
             if (player.getPosition().equals(target)) player.hit();
-            if(skipped) gMap.addScore(ScoreList.ScoreType.Skip);
+            if(skipped) gMap.addScore(ScoreList.ScoreType.PlaneSkip);
             position = target;
             if (direction == Direction.L && position.x == -10) defeated = true;
             if (direction == Direction.R && position.x == GameMap.WIDTH+10) defeated = true;
@@ -87,5 +89,9 @@ public class SkipShip implements OutsideEntity {
                 region.getRegionWidth(),region.getRegionHeight(),
                 1+addedSize+metronome.getTickPercentage(),1+addedSize+metronome.getTickPercentage(),direction.rotation);
         batch.setColor(Color.WHITE);
+    }
+    @Override
+    public boolean toRemove() {
+        return false;
     }
 }
